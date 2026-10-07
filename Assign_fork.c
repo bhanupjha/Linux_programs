@@ -4,9 +4,9 @@
 #include<sys/types.h>
 int main()
 {
-printf("Hello\n");
-fork();
-printf("Hi\n");
-fork();
-printf("Exiting\n");
+	printf("Hello\n");
+	fork();
+	printf("Hi\n");
+	fork();
+	printf("Exiting\n");
 }
