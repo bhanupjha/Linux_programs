@@ -20,6 +20,7 @@ int main()
 		perror("getrlimit"); 
 		exit(0);
 	}
+	printf("Before increasing limit: %u\n%u\n", var.rlim_cur, var.rlim_max);
 	var.rlim_cur*=3;
 	if(setrlimit(RLIMIT_STACK,&var)==-1)//Requests the kernel, to modify the stack limit of THIS PROCESS to the values in var.
 	{
