@@ -47,6 +47,7 @@ int main()
 	if(ret2 == 0)
 	{// child 2 code
 	 	dup2(p1[0], 0);
+		dup2(p2[1], 1);
 		close(p1[1]);
 		close(p1[0]);
                 close(p2[0]);
