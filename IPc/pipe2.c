@@ -20,30 +20,23 @@ int main()
 		perror("pip2");
 		return 1;
 	}
-
+	
 	int ret = fork();
 	if(ret == -1)
 	{
 		perror("fork");
 		return 1;
 	}
-	if(ret>0)
-	{ // parent code
+	if(ret==0)
+	{ // child 1 code
 	  	dup2(p1[1], 1);
 		close(p1[0]);
 		close(p1[1]);
 		close(p2[0]);
 		close(p2[1]);
 		execlp("ps", "ps", "-e", "-l", NULL);
-	}
-	else
-	{// child code
-	 	dup2(p1[0], 0);
-		close(p1[1]);
-		close(p1[0]);
-                close(p2[0]);
-                close(p2[1]);
-		execlp("grep", "grep", "pts", NULL);
+		perror("ps");
+		return 1;
 	}
 	int ret2 = fork();
 	if(ret2 == -1)
@@ -51,14 +44,27 @@ int main()
 		perror("fork");
 		return 1;
 	}
-	if(ret2==0)
-	{// child process
-		dup2(p2[0], 0);
-		close(p1[0]);
+	if(ret2 == 0)
+	{// child 2 code
+	 	dup2(p1[0], 0);
 		close(p1[1]);
-		close(p2[0]);
-		close(p2[1]);
-		execlp("wc", "wc", "-l", NULL);
+		close(p1[0]);
+                close(p2[0]);
+                close(p2[1]);
+		execlp("grep", "grep", "pts", NULL);
+		perror("grep");
+		return 1;
 	}
+	
+	// parent process
+	dup2(p2[0], 0);
+	close(p1[0]);
+	close(p1[1]);
+	close(p2[0]);
+	close(p2[1]);
+	execlp("wc", "wc", "-l", NULL);
+	perror("wc");
+	return 1;
+	
 
 }
